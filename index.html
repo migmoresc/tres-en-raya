@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tres en raya</title>
+    <link rel="stylesheet" href="estilos.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>Bienvenid@ al 3 en raya</header>
+    <main>
+        <section>
+            <div class="jugadores">
+                <div class="left jugador1">
+                    <label for="jugador1">Nombre del jugador 1:</label>
+                    <input type="text" id="j1Nombre" maxlength="14" value="a">
+                    <label for="ficha1">Símbolo:</label>
+                    <input type="button" id="j1Sx" class="botonSimbolo" value="X">
+                    <input type="button" id="j1So" class="botonSimbolo" value="O">
+                    <label for="turno" class="block">Tipo de turno</label>
+                    <input type="radio" name="turno" id="turno-1" value="1"><label for="turno-1">1º</label>
+                    <input type="radio" name="turno" id="turno-2" value="2"><label for="turno-2">2º</label>
+                    <input type="radio" name="turno" id="turno-3" value="aleatorio"><label class="pad5h"
+                        for="turno-3">Aleatorio</label>
+                </div>
+                <div class="right jugador2">
+                    <label for="jugador2">Nombre del jugador 2:</label>
+                    <input type="text" class="hover-text" id="j2Nombre" placeholder="BOT" maxlength="14">
+                    <span class="tooltip-text">Si está vacío o escribes BOT la máquina jugará</span>
+                    <label for="ficha2">Símbolo:</label>
+                    <input type="button" id="j2Sx" class="botonSimbolo" value="X">
+                    <input type="button" id="j2So" class="botonSimbolo" value="O">
+                </div>
+            </div>
+            <div class="divComienzo">
+                <input id="buttComienzo" type="button" value="Iniciar">
+            </div>
+            <div class="divTurno">
+
+            </div>
+            <div class="juego">
+                <table cellspacing="0">
+                    <tbody>
+                        <tr class="fila-0">
+                            <td class="columna-0"
+                                style="border-right: 3px solid black;border-bottom: 3px solid black;"></td>
+                            <td class="columna-1" style="border-bottom: 3px solid black;"></td>
+                            <td class="columna-2"
+                                style=" border-left: 3px solid black;border-bottom: 3px solid black;"></td>
+                        </tr>
+                        <tr class="fila-1">
+                            <td class="columna-0" style="border-right: 3px solid black;"></td>
+                            <td class="columna-1"></td>
+                            <td class="columna-2" style="border-left: 3px solid black;"></td>
+                        </tr>
+                        <tr class="fila-2">
+                            <td class="columna-0"
+                                style="border-right: 3px solid black;border-top: 3px solid black;"></td>
+                            <td class="columna-1" style="border-top: 3px solid black;"></td>
+                            <td class="columna-2"
+                                style=" border-left: 3px solid black;border-top: 3px solid black;"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <div class="bro">
+        EY BRO NO TE PASES
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="scripts.js"></script>
+</body>
+
+</html>
