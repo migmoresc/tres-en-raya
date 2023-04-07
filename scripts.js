@@ -125,7 +125,7 @@ function reiniciarJuego() {
     $("#buttComienzo").attr("value", "Iniciar");
     $("#j1Nombre").attr("disabled", false);
     $("#j2Nombre").attr("disabled", false);
-    $("input[type='radio'").attr("disabled", false);
+    $("input[type='radio']").attr("disabled", false);
     $(".botonSimbolo").on("click", handler);
     $(".divTurno").html("");
     limpiarTablero();
@@ -135,7 +135,7 @@ function comienzaJuego() {
     $(".divTurno").html(`<p>Es el turno de <span>${jugadores[turnoNum % 2]}</span></p>`);
 
     if (jugadores.indexOf("BOT") != -1 && jugadores[turnoNum % 2] == "BOT" && $("tr.fila-1 td.columna-1").html() == "") {
-        setTimeout(function () { $("tr.fila-1 td.columna-1").click(); }, 1000);
+        setTimeout(function () { $("tr.fila-1 td.columna-1").click(); }, 500);
     }
 
     /* Función que se realiza al pulsar sobre una celda del tablero de juego */
@@ -209,13 +209,13 @@ function comienzaJuego() {
                     $(".divTurno").html(`<span>EMPATE</span>`);
                     setTimeout(function () {
                         juegoTerminado();
-                    }, 1000);
+                    }, 500);
                 } else {
                     $(".divTurno").html(`Es el turno de <span>${jugadores[turnoNum % 2]}</span>`);
                     if (jugadores[turnoNum % 2] == "BOT") {
                         setTimeout(function () {
                             mueveBot();
-                        }, 1000);
+                        }, 500);
                     }
                 }
             }
@@ -265,10 +265,10 @@ function mueveBot() {
             let numRep0 = filas[aux].reduce((count, valor) => (valor == 0 ? count + 1 : count), 0);
             let numRepB = filas[aux].reduce((count, valor) => (valor == numBot ? count + 1 : count), 0);
             let numRepA = filas[aux].reduce((count, valor) => (valor == numAdvers ? count + 1 : count), 0);
-            if (numRep0 >= 2) {
+            if (numRep0 >= 1) {
                 casillasLibres = getAllIndexes(filas[aux], casillasLibres, aux, "f");
             }
-            if (numRepB == 2 && numRep0 == 1) {
+            if (numRepB == 2 && numRep0 == 1) {//si el bot tiene a tiro ganar pone la ficha
                 pos = "tr.fila-" + aux + " td.columna-" + filas[aux].indexOf(0);
                 $(pos).click();
                 return true;
@@ -276,7 +276,7 @@ function mueveBot() {
                 let numRep0 = columnas[aux].reduce((count, valor) => (valor == 0 ? count + 1 : count), 0);
                 let numRepB = columnas[aux].reduce((count, valor) => (valor == numBot ? count + 1 : count), 0);
                 let numRepA = columnas[aux].reduce((count, valor) => (valor == numAdvers ? count + 1 : count), 0);
-                if (numRep0 >= 2) {
+                if (numRep0 >= 1) {
                     casillasLibres = getAllIndexes(columnas[aux], casillasLibres, aux, "c");
                 }
                 if (numRepB == 2 && numRep0 == 1) {
@@ -287,7 +287,7 @@ function mueveBot() {
                     let numRep0 = diagTb.reduce((count, valor) => (valor == 0 ? count + 1 : count), 0);
                     let numRepB = diagTb.reduce((count, valor) => (valor == numBot ? count + 1 : count), 0);
                     let numRepA = diagTb.reduce((count, valor) => (valor == numAdvers ? count + 1 : count), 0);
-                    if (numRep0 >= 2) {
+                    if (numRep0 >= 1) {
                         casillasLibres = getAllIndexes(diagTb, casillasLibres, aux, "tb");
                     }
                     if (numRepB == 2 && numRep0 == 1) {
@@ -298,7 +298,7 @@ function mueveBot() {
                         let numRep0 = diagBt.reduce((count, valor) => (valor == 0 ? count + 1 : count), 0);
                         let numRepB = diagBt.reduce((count, valor) => (valor == numBot ? count + 1 : count), 0);
                         let numRepA = diagBt.reduce((count, valor) => (valor == numAdvers ? count + 1 : count), 0);
-                        if (numRep0 >= 2) {
+                        if (numRep0 >= 1) {
                             casillasLibres = getAllIndexes(diagBt, casillasLibres, aux, "bt");
                         }
                         if (numRepB == 2 && numRep0 == 1) {
@@ -327,7 +327,6 @@ function mueveBot() {
                 colGanAdv = filas[aux].indexOf(0);
             }
         }
-
         if (filGanAdv != -1) {
             pos = "tr.fila-" + filGanAdv + " td.columna-" + colGanAdv;
             $(pos).click();
@@ -343,8 +342,8 @@ function mueveBot() {
     }
 }
 function getAllIndexes(array, arrayLibres, aux, orientacion) {
-
     let indexes = [], i;
+    let yaEsta = false;
     for (i = 0; i < array.length; i++) {
         if (array[i] === 0) {
             switch (orientacion) {
@@ -358,23 +357,35 @@ function getAllIndexes(array, arrayLibres, aux, orientacion) {
                     indexes = [i, i];
                     break;
                 case "bt":
-                    indexes = [aux - i, aux - i];
+                    indexes = [2 - i, i];
                     break;
             }
-        }
-        if (arrayLibres.indexOf(indexes) == -1) {
-            arrayLibres.push(indexes);
+            for (let x = 0; x < arrayLibres.length; x++) {
+                if (arrayLibres[x].toString() === indexes.toString()) {
+                    yaEsta = true;
+                    break;
+                }
+            }
+            if (!yaEsta) {
+                arrayLibres.push(indexes);
+            }
         }
     }
-
     return arrayLibres;
 }
 function ponerEsquina() {
-    if (filas[0][0] == 0) {
-        $("tr.fila-0 td.columna-0").click();
-        return true;
-    } else if (filas[0][2] == 0) {
-        $("tr.fila-0 td.columna-2").click();
+    let esquinas = [];
+    if (filas[0][0] == 0 && filas[2][2] == 0) {
+        esquinas.push("tr.fila-0 td.columna-0");
+        esquinas.push("tr.fila-2 td.columna-2");
+    } else if (filas[0][2] == 0 && filas[2][0] == 0) {
+        esquinas.push("tr.fila-0 td.columna-2");
+        esquinas.push("tr.fila-2 td.columna-0");
+    }
+
+    console.log(esquinas);
+    if (esquinas.length > 0) {
+        $(esquinas[Math.floor(Math.random() * esquinas.length)]).click();
         return true;
     }
     return false;
@@ -382,6 +393,6 @@ function ponerEsquina() {
 function desactivarEntradas() {
     $("#j1Nombre").attr("disabled", true);
     $("#j2Nombre").attr("disabled", true);
-    $("input[type='radio'").attr("disabled", true);
+    $('input[type="radio"]').attr("disabled", true);
     $(".botonSimbolo").off("click", handler);
 }
